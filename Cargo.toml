@@ -1,0 +1,14 @@
+[package]
+name = "c-sharp-tree-sitter"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[build-dependencies]
+minreq = "2.8.1"
+csbindgen = "1.7.3"
+
+[features]
+default = ["minreq/native-tls"]
