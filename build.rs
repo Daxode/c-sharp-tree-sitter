@@ -13,6 +13,14 @@ fn main() -> Result<(), minreq::Error> {
             "lib.rs",
         ),
         (
+            "https://raw.githubusercontent.com/daxode/tree-sitter/master/highlight/src/",
+            "lib/binding_rust/bindings.rs"
+        ),
+        (
+            "https://raw.githubusercontent.com/daxode/tree-sitter-c-sharp/master/bindings/rust/",
+            "lib.rs",
+        ),
+        (
             "https://raw.githubusercontent.com/daxode/tree-sitter-c-sharp/master/src/",
             "parser.c",
         ),
@@ -28,9 +36,14 @@ fn main() -> Result<(), minreq::Error> {
 
     // language sources are group with the lib name
     let lang_sources = vec![
-        (2, 3, "tree_sitter_c_sharp"),
+        (3, 4, "tree_sitter_c_sharp"),
     ];
-    let rust_sources = vec![0, 1];
+    struct LangAndIsExtern {index: usize, is_ext: bool}
+    let rust_sources = vec![
+        // LangAndIsExtern { index: 0, is_ext: true }, 
+        // LangAndIsExtern { index: 1, is_ext: true }, 
+        LangAndIsExtern { index: 2, is_ext: true }
+    ];
     
     // Download files
     let out_dir = std::env::var("OUT_DIR").unwrap();
@@ -47,8 +60,12 @@ fn main() -> Result<(), minreq::Error> {
     // Build the C# bindings
     let mut builder = csbindgen::Builder::default();
     for source_index in rust_sources {
-        let dest_path = Path::new(&out_dir).join(&sources[source_index].1);
-        builder = builder.input_extern_file(&dest_path);
+        let dest_path = Path::new(&out_dir).join(&sources[source_index.index].1);
+        if source_index.is_ext {
+            builder = builder.input_extern_file(&dest_path);
+        } else {
+            builder = builder.input_bindgen_file(&dest_path);
+        }
     }
 
     builder
