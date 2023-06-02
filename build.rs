@@ -68,12 +68,11 @@ fn main() -> Result<(), minreq::Error> {
         }
     }
 
-    builder
-        .csharp_class_name("CSharpTreeSitter")
-        .csharp_dll_name("c-sharp-tree-sitter")
-        .csharp_use_function_pointer(true)
-        .generate_csharp_file("CSharpTreeSitter.cs")
-        .unwrap();
+    // let result = builder
+    //     .csharp_class_name("CSharpTreeSitter")
+    //     .csharp_dll_name("c-sharp-tree-sitter")
+    //     .generate_csharp_file("CSharpTreeSitter.cs");
+    // println!("cargo:warning={:?}", result);
     
     // for every c source file tuple use CC to create a static library
     // for lang_index in lang_sources {
